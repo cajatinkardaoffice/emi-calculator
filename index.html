@@ -38,7 +38,7 @@
 
   header {
     background: var(--forest);
-    padding: 0 2rem;
+    padding: 0 1.2rem;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -46,28 +46,51 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    gap: 0.75rem;
+    min-height: 64px;
+    flex-wrap: nowrap;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex-shrink: 1;
   }
 
   .logo {
     font-family: 'Playfair Display', serif;
-    font-size: 1.35rem;
+    font-size: clamp(1rem, 4vw, 1.35rem);
     font-weight: 700;
     color: var(--gold-light);
     letter-spacing: 0.02em;
+    white-space: nowrap;
   }
   .logo span { color: #fff; font-weight: 400; }
 
+  .logo-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: clamp(0.5rem, 2vw, 0.62rem);
+    color: rgba(212,160,23,0.7);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
   .badge {
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
+    font-size: clamp(0.55rem, 1.5vw, 0.65rem);
     background: rgba(184,134,11,0.2);
     color: var(--gold-light);
     border: 1px solid rgba(212,160,23,0.4);
-    padding: 3px 10px;
+    padding: 4px 8px;
     border-radius: 2px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1.4;
   }
 
   main {
@@ -249,8 +272,8 @@
 
   .input-row {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 0.75rem;
+    grid-template-columns: 1fr 1fr 32px;
+    gap: 0.6rem;
     align-items: center;
     background: rgba(184,134,11,0.04);
     border: 1px solid var(--border);
@@ -277,11 +300,14 @@
     border-radius: 4px;
     color: var(--rust);
     cursor: pointer;
-    padding: 0.4rem 0.6rem;
-    font-size: 0.75rem;
-    font-family: 'DM Mono', monospace;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+    display: grid;
+    place-items: center;
     transition: all 0.2s;
-    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0;
   }
   .btn-remove:hover { background: #fff0ee; border-color: var(--rust); }
 
@@ -410,11 +436,11 @@
 <body>
 
 <header>
-  <div style="display:flex;flex-direction:column;gap:2px;">
+  <div class="header-left">
     <div class="logo">EMI <span>Calculator</span></div>
-    <div style="font-family:'DM Mono',monospace;font-size:0.62rem;color:rgba(212,160,23,0.7);letter-spacing:0.08em;text-transform:uppercase;">by CA Jatin Karda</div>
+    <div class="logo-sub">by CA Jatin Karda</div>
   </div>
-  <div class="badge">Loan Repayment Schedule</div>
+  <div class="badge">Loan<br>Repayment<br>Schedule</div>
 </header>
 
 <main>
@@ -568,9 +594,9 @@
     const row = document.createElement("div");
     row.className = "input-row";
     row.innerHTML = `
-      <input class="rateDate" placeholder="DD-MM-YYYY" readonly style="cursor:pointer;">
+      <input class="rateDate" placeholder="Date" readonly style="cursor:pointer;">
       <input class="rateVal" type="number" placeholder="New Rate (%)">
-      <button class="btn-remove" onclick="this.parentElement.remove()">✕ Remove</button>
+      <button class="btn-remove" onclick="this.parentElement.remove()" title="Remove">✕</button>
     `;
     container.appendChild(row);
     initPicker(row.querySelector(".rateDate"));
@@ -581,9 +607,9 @@
     const row = document.createElement("div");
     row.className = "input-row";
     row.innerHTML = `
-      <input class="prepayDate" placeholder="DD-MM-YYYY" readonly style="cursor:pointer;">
-      <input class="prepayAmt" type="number" placeholder="Prepayment Amount (₹)">
-      <button class="btn-remove" onclick="this.parentElement.remove()">✕ Remove</button>
+      <input class="prepayDate" placeholder="Date" readonly style="cursor:pointer;">
+      <input class="prepayAmt" type="number" placeholder="Amount (₹)">
+      <button class="btn-remove" onclick="this.parentElement.remove()" title="Remove">✕</button>
     `;
     container.appendChild(row);
     initPicker(row.querySelector(".prepayDate"));
